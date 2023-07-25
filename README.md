@@ -30,11 +30,11 @@
 - Trigger當我們對table做塞入/編輯資料時後做一些動作(例如發通知、或紀錄)
 - Partition當資料很多時可以做一個切割，可以讓我們快速去找到我們要的東西
 - drop table就可以砍掉這張表/Truncate table則是把資料刪除 但表還是保留。(謹慎)
-'''sh
+``` sh
 Create table `orders`, `customers` (
   `customers_id` INT NOT NULL,
   Primary key(`customers_id`));
-'''
+```
 
 #### 欄位
 #### 課程資料匯入與匯出
