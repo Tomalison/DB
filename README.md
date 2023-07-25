@@ -104,17 +104,57 @@ Truncate `orders`, `customers`;
 
 ## SQL語法
 #### 撈取資料庫資料的關鍵字Select
+- select : sql的搜尋敘述從select開始>from資料庫.table名稱>where條件子句
+- 若是沒from則是單純列印
+- 資料量大時盡量避免
+- 搜尋資料請假入條件增加搜尋效率
+- 假設資料庫有多個資料庫，select * from orders.orders; 表前面指定資料庫
+- 如何限制資料數量 limit 10; 就是限制資料只要10筆
+- where customerid = 87 and employeeid = 3; 用and(且)增加篩選條件
 #### 多個表格連接在一起的作法
+- Join方法 : 將兩個table結合再一起；在where設定結合條件來執行
+- 例如 select *  from orders, orderdetails where orders.orderid = orderdetails.orderid
 #### 排序
+- order by :排序；asc由小到大；desc由大到小
+- select * from A order by price desc;
 #### 將特定欄位中相同的資料作為分組
+- group by : 資料分組；當我們搜尋的欄位中，包含函數的運算時，我們就會使用group by
+- select item, sum(price) from list group by item; 他的price就會依照item做加總
 #### 資料分組後加入條件，過濾出你想要的資料
+- having: 子句能夠過濾條件，控制那些組可以出現在最後結果中，有點像是第二層過濾
+- select item, sum(price) from list group by item having sum(price) > 50;  就會抓出大於50的資料；having要加在order by之上，但其他子句之下。
 #### 欄位名字過長?表單名字太複雜?暫時取個暱稱來使用
+- as : 用來指定欄位別名或是表格別名
+- select o.orderid ad order_id  from orders as o, orderdetails as d where o.orderid = d.orderid
 #### 不曉得完整、精確的資料內容，也可以找出大概可能的結果
+- like：可以找出相同模式的資料　％
+- select * from Table where name like 'C%'; %也可前後都放
 #### 搜尋出特定範圍的日期或數字資料
+- between ...and : 可以找出一個範圍內的資料
+- select * from Table where numbers between 1 and 10; 可以介於1~10的資料(包含)
 #### 元素比較
+- in : 找出符合在in元素中的資料
+- not in : 找出不符合在這元素中的資料
+- select * from Table where numbers in (5,8); 找出 5跟8的資料 如果是用not in 就會找出除了5跟8以外的資料
 #### 子查詢
+- 在一個SQL查詢敘述之中，在放入一個SQL查詢
+- 子查詢要用刮弧包起來
+- 在使用子查詢的時候也可以使用外部SQL的Table與欄位
+- ![image](https://github.com/Tomalison/DB/assets/96727036/63f1df8f-14f0-4dfa-8cd7-e1602002d0fe)
+- 例如 select * from orders o where o.OrderID in ( select d.OrderID from orderdetails d where o.OrderID = d.OrderID and d.productID = 12); 外層只放了orders這張表，因為我要找出有哪些訂單，然後我要查詢在這OrderID之中 他有哪些訂單是包含產品ID是12的訂單明細
 #### 搜尋資料時，用exits會更有效率
+- exists : 用來判斷子查詢有沒有查詢的結果
+- select * from orders where exists (select d.OrderID from orderdetails d where o.OrderID = d.OrderID and d.productID = 12);
 #### 新增資料
+- insert : 將資料塞入資料庫當中
+- insert into Table(Col_1, Col_2) values (1, 'data'); 將值寫入到各自這兩個欄位
+- 將某表資料塞入到另一張表中
+```sh
+insert into shippers(shipperid, shippername, phone)
+select 5, suppliername, phone
+from suppliers
+where SupplierID = 2;
+```
 #### 修改資料
 #### 刪除資料
 
