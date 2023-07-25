@@ -35,6 +35,20 @@ Create table `orders`, `customers` (
   `customers_id` INT NOT NULL,
   Primary key(`customers_id`));
 ```
+``` sh
+Alter Table `orders`, `customers`
+Add Column `customer_name` Varchar(45) Not Null After `customers_id`;
+```
+``` sh
+Alter Table `orders`, `customers`
+Drop Column `customer_name`;
+```
+``` sh
+Drop Table `orders`, `customers`;
+```
+``` sh
+Truncate `orders`, `customers`;
+```
 
 #### 欄位
 #### 課程資料匯入與匯出
