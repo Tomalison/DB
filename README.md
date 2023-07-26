@@ -156,22 +156,102 @@ from suppliers
 where SupplierID = 2;
 ```
 #### 修改資料
+- update : 更新資料庫中的資料
+- update Table set name = 'Ryan' where id = 1;
+``` sh
+update shippers
+set shippername = 'ABC'
+where shipperid = 5;
+```
 #### 刪除資料
-
+- delete : 將資料庫中的資料刪除
+- delete from Table where id = 1;
+``` sh
+delete from shippers
+where shipperid = 5 ;
+```
 ## Mysql函式庫與運算子
 #### 數學運算子
+- 加減乘除(+-*/)
+- select 3 mod 2; 這就是餘數=1
+- select 3 div 2; 相除之後的整數
 #### 比較運算子
+- 大於,小於,等於,不等於(> ,< ,= ,!=)
+- select * from products where productid != 1 ; 向這個會把不等於1的全部列出來
 #### 邏輯運算子
+- ![image](https://github.com/Tomalison/DB/assets/96727036/33a81c05-a13b-42b0-892e-56520d05d976)
+- and , or , not(將邏輯運算反過來)
+- select * from Table where (name='amy' or name='john'); 找這張表中符合其中一項就可以列出來
+- select * from Table where not name = 'cindy'; 找這表不是cindy的所有資料
 #### 計算資料的數量
+- count : 計算資料的數量
+- distinct 呈現不重複的資料
+- ![image](https://github.com/Tomalison/DB/assets/96727036/558ceb4c-261b-469a-ba60-0148b0379d91)
+- 以上面的範例來說，就是算name有4筆資料；如果是用distinct 他就只會呈現ABC三個資料
+- select count(distinct productid) from orderdetails; 可以利用這個結合技巧去計算不重複資料有幾筆
 #### 數學運算函式庫
+- sum(col):欄位數值的總和
+- abs(num):num的絕對值
+- round(num,n):num小數點後第n位四捨五入
+- truncate(num,n):num值小數點後第n位,無條件捨去
+- pow(x,y):x的y次方
+- sqrt(num):num的平方根
 #### 處理文字的函式庫
+- Substring(str,pos):擷取字串從pos位置開始到最後一個 ； select  substring('abcdef',2); 這個範例就會印出bcdef
+- Substring(str,pos,len):從pos位置開始，擷取長度len的字串 ； select  substring('abcdef',2,3); 這個範例就會印出bcd
+- Concat(A,B):將A字串與B字串結合 ; select concat(lastname,' ',firstname) from employees; 就可以合成像是 Tom SU的名字
+- Replace(A,'cde','fgh'):將A欄位或字串中的cdf文字換成fgh文字 
 
 ## 資料庫進階功能
 #### 建立索引，加快搜尋資料的速度
+- index : 提升資料庫搜尋資料的效率
+- ![image](https://github.com/Tomalison/DB/assets/96727036/81f827f7-887a-48db-ab82-df9fe0b04e73)
+- 如何建立 select * from orders.employees; 假設我們要針對lastname增加索引，找到該表然後找到"索引"功能
+- 這個索引觀念要謹記，未來在資料量大時可以使用
 #### 當事件發生時，建立一個觸發程序能幫你啟動自動化的程式
+- trigger(觸發器_Navicat) 是跟著table去操作的，在insert、update、delete之前或之後扣下扳機
+- ![image](https://github.com/Tomalison/DB/assets/96727036/c3d3a049-17a3-4f5c-9512-6d69d3ae4c3b)
+- 假設我要在員工after insert後，新增一個trigger。 new.欄位名稱，是要用該欄位的值；sysdate()目前現在的時間(時分秒)
+```sh
+create definer = current_user trigger 'orders'.'employees_after_insert' after insert on 'employees' for each row
+begin
+insert into employees_log(name, date) values(new.lastname, sysdate());
+end
+```
 #### 虛擬表格能幫你在應用層少寫一些SQL語法和程式碼，是一個實用技能
+- views(檢視功能_Navicat) : 她是像是TABLE但是是由SQL組成的，有時候我們會寫一長串的SQL像是出報表或搜尋資料的SQL，我們就把它包起來變成view，另外開帳號權限給別人使用不用看到原始資料
+- ![image](https://github.com/Tomalison/DB/assets/96727036/1a470d95-d646-416d-a9aa-fb9caadb4bdb)
+
 #### 在資料庫中撰寫自己的函式，將流程和邏輯包起來，隨時可使用
+- stored procedures(事件) : 我們可能在固定的時間，例如每日或是每週期去產生一些報表給主管去看，或是要匯入到另一張TABLE，就會去儲存這個
+```sh
+Delimiter $$
+
+create procedure 'add_summary' (sum int, add_time datetime)
+begin
+
+if add_time < now() then
+  insert into summary(sum, date) values(sum, add_time):
+else
+  select 'error':
+end if:
+
+end
+```
+- 使用這個procedures方式 : call add_summary(200, str_to_date('2017/10/30','%Y/%m/%d')):
+- select * from summary: 就可以看到呼叫這程式的資料
 #### 教你如何使用資料庫中內建的函式和常用的函式
+- functions(函式_Navicat) 製作自己的函式 例如做一個BMI函式 ；decimal小數點長度是3，到小數點第1位
+```sh
+Delimiter $$
+
+create function 'bmi' (w decimal(3,1), h decimal(3,1))  
+returns decimal(3,1)
+begin
+return w/pow(h,2):
+end
+```
+- 試看看這函式 : select bmi(55, 1.6);
 
 ## 程式語言串連資料庫的設計與實作
 #### 安裝Python學習環境for Windows
