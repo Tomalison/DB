@@ -282,8 +282,10 @@ try:
 except connector.Error as e:
     print('連線失敗',e)
 finally:
+    if connection.is_connected():
+    cursor.close()
     connection.close()
-    print('資料庫連線已經關閉')
+    print('連線已關閉')
 ```
 #### 使用參數撰寫SQL語法，避免SQL注入攻擊(SQL INJECTION)
 #### Tomcat安裝與說明
