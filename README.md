@@ -255,7 +255,36 @@ end
 
 ## 程式語言串連資料庫的設計與實作
 #### 安裝Python學習環境for Windows
+- 個人使用pycharm
+#### Python串接Mysql資料庫
+- 在terminal安裝mysql : pip install mysql-connector-python
+```sh
+from mysql import connector
 
+connection = connector.connect(host='localhost', database='pet100', user='root', password='123') # 連接資料庫
+cursor = connection.cursor() # 建立游標物件
+cursor.execute('select database()') # 執行SQL指令
+result = cursor.fetchall() # 取得所有資料
+print(result) # 輸出結果
+connection.close() # 要注意關閉，不然常常佔據資源
+```
+- try 連線資料庫
+- except 發生錯誤後的動作
+- finally 中斷連線
+``` sh
+from mysql import connector
+try:
+    connection = connector.connect(host='localhost', database='pet100', user='root', password='123') # 連接資料庫
+    cursor = connection.cursor() # 建立游標物件
+    cursor.execute('select database()') # 執行SQL指令
+    result = cursor.fetchone() # 取得
+    print('目前使用資料庫',result) # 輸出結果
+except connector.Error as e:
+    print('連線失敗',e)
+finally:
+    connection.close()
+    print('資料庫連線已經關閉')
+```
 #### 使用參數撰寫SQL語法，避免SQL注入攻擊(SQL INJECTION)
 #### Tomcat安裝與說明
 #### Tomcat目錄價購與web.xml設定
