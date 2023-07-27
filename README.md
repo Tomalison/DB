@@ -1,4 +1,4 @@
-# 資料庫學習紀錄
+![image](https://github.com/Tomalison/DB/assets/96727036/4c056aa4-01dc-4c93-b66a-c86f5e554cb3)# 資料庫學習紀錄
 
 ## 系統安裝與介面操作
 
@@ -288,11 +288,96 @@ finally:
     print('連線已關閉')
 ```
 #### 使用參數撰寫SQL語法，避免SQL注入攻擊(SQL INJECTION)
-#### Tomcat安裝與說明
-#### Tomcat目錄價購與web.xml設定
+- prepared statement:用來執行SQL的方法之一
+- setString(依序編號，輸入值);
+- SQL injection (防止注入攻擊)
+- select * from employees where employeeid = ? 然後在Java程式:加入 stmt.setInt(1,2)這個物件。這概念就是把會變動的參數，在SQL先寫?。接著在程式語言中依序找出變數與其要帶入的值
+- ![image](https://github.com/Tomalison/DB/assets/96727036/ef723874-af48-457e-9210-049bc13ddff1)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/4241d0c7-ecc1-4c6d-8100-4a2db585c791)
+
 #### Web系統架構
+- ![image](https://github.com/Tomalison/DB/assets/96727036/e044d6d4-d13f-4dcf-aff2-0ed06391de41)
+- 資料庫 >> DAO(data access object):資料存取物件 >> Service:商業邏輯、資料彙整 >> Servlet >> JSP
+- 每一個table我們會給他一個DAO的物件，例如 employee我們就會給他一個employeeDAO的物件
+- Java的範例 Tomcat、Mysql JDBC Driver 、JSTL
+- ![image](https://github.com/Tomalison/DB/assets/96727036/d378efa3-05c8-4712-b0e1-3b09d46ea377)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/4f55b0f1-ab79-4ab6-ba04-fed65f71678c)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/a7e3fe2a-5eb3-4cc9-a13e-fc539015eec3)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/0dfd19d8-9a6d-4848-b217-57e255e6e522)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/b9b31f9a-97cf-4873-a451-185688a43119)
+
 #### 物件關係對應(ORM)實作
+- ORM(Object-Relational Mapping) 使用封裝好的物件操作資料
+- ![image](https://github.com/Tomalison/DB/assets/96727036/1d063716-aaff-490e-b54d-a1979e591f36)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/c5b42c53-65e9-468e-a3a4-53f1e05c098f)
+- helper.java
+- ![image](https://github.com/Tomalison/DB/assets/96727036/0d35aba9-4b7a-4096-8ee5-06bd0a1e4936)
+- 封裝物件
+- ![image](https://github.com/Tomalison/DB/assets/96727036/3205d619-5ae4-4263-9263-c4c22dcd024c)
+- 可以直接在物件下做轉換
+- ![image](https://github.com/Tomalison/DB/assets/96727036/58973569-1761-41b2-b839-d2cf5ffe849b)
+- DAO層
+- ![image](https://github.com/Tomalison/DB/assets/96727036/5ad0c4e6-7577-4cef-9091-9492f16335e6)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/60bb96dd-9640-47c3-a750-dd509ff9b965)
+- Service層
+- ![image](https://github.com/Tomalison/DB/assets/96727036/3d896c43-6ad2-4b46-90dd-952a4e1d2aad)
+- hiberbate 實做ORM的Framework 提高工程師開發系統的效率 http://hibernate.org/
 
 ## Mysql資料庫維護
+- Dashboard 可以確認資料庫目前狀態
+- performance report 可以看更細部的資料
+- I/O
+- Statement Analysis可以看到SQL的執行效率 這比較偏我們能改良的
+- Cilent Connections 如果連太久可以Kill Connection
+- Users and Privileges 可以設定Scema的權限給特定使用者，可以設定帳號的每小時取得數量、瞬間可以連的數量等等；如果我們每次connection沒close掉的話concurrent connections就會一直佔著數量 這邊可以先設定個上限讓Cilent不要佔著
+- 程式中有一個connection pool 暫存  讓我們不用佔據太多connection
+- administrative roles 可以設定角色權限
+- schema privileges 可以做的動作
 ## Nosql資料庫
+- 非關聯式資料庫
+- 解決讀取海量資料的資料庫技術
+- key-value資料型態(ex.id=123)
+- 當資料量大時讀取速度更快
+- 增加減少欄位的效率高
+- 擴充方便
+- ![image](https://github.com/Tomalison/DB/assets/96727036/424836cd-fe38-420f-9d36-5a5b67ee41aa)
+- 上圖是過去關聯式串查方式
+- Nosql
+``` sh
+{
+ "CustomerID":"90",
+ "OrderDate":"1996-07-04",
+ "shipper":{
+   "Phone":"(503)555-9931",
+   "ShipperID":"3",
+   "ShipperName":"Federal Shipping"
+  }
+}
+```
+- Nosql最主要是透過ID找出所有資料，但他的缺點是建立報表沒那麼方便
+- 如果資料量很大 可以考慮用NOSQL這個技術
+- NOSQL使用API操作資料庫
+- ![image](https://github.com/Tomalison/DB/assets/96727036/9447895f-8cc0-47e5-9274-f2b81ff502e7)
+- [https://docs.aws.amazon.com/zh_cn](https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/HowItWorks.API.html
+)
+- https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/HowItWorks.API.html
+- 資料庫軟體 : MongoDB / redis / hadoop
+- 雲端服務 : Google Cloud BigTable / DynamoDB
+- ![image](https://github.com/Tomalison/DB/assets/96727036/6846bc2a-2f68-442c-83e2-0efae27782b8)
+
+![image](https://github.com/Tomalison/DB/assets/96727036/c78779ed-3273-4ef6-bd57-d599707a308a)
+
 ## SQL語法判斷資料的方式
+- ![image](https://github.com/Tomalison/DB/assets/96727036/a20f7b84-2f61-4b82-867c-c8752609e298)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/d9cdcc51-24aa-40b7-822e-092578466b51)
+- Case 幫助我們對欄位做多種情況的區分 switch功能 if-else功能
+- ![image](https://github.com/Tomalison/DB/assets/96727036/01360e8f-ba1e-46e3-be37-2eca9b48f0d3)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/c15ac9ff-6f9c-4db2-b1f5-aeaebdd8e3a7)
+- ![image](https://github.com/Tomalison/DB/assets/96727036/6937e897-dcdb-407f-bb28-bed77a261133)
+
+#### 補充
+- 
+
+
+
+
